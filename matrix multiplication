@@ -1,0 +1,73 @@
+## Generating Boolean matrices as nested lists of True / False values and multilpying them.
+
+from random import randint
+
+def bitor(a,b):
+    """runs the or operation on two bitstrings component-wise"""
+    sum = []
+    if len(a) != len(b)
+       return 'Error'
+    else:
+       for i in range(len(a)): ## we already checked len(a) = len(b) so we can use either as the upper bound for indexing variable
+           j = a[i] or b[i]
+           sum.append(j)
+       return sum
+
+def bitand(a,b):
+    """run the and operation on two bitstrings component-wise"""
+    product = []
+    if len(a) != len(b)
+       return 'Error'
+    else:
+       for i in range(len(a)): 
+           j = a[i] and b[i]
+           product.append(j)
+       return product
+
+def randstring(k)
+    """to define random matrices we need to get random bitstrings, which are the elements of the matrices"""
+    string = []
+    for i in range(k):
+        m = randint(0,1) ##source of randomness, run each time on iteration for fresh randomness i.e. each element of bitstring independently distributed
+                         ##this is giving us true / false with p = 1/2; might be possible to modify this as dicussed in paper
+        if m == 0:
+           string.append(False)
+        if m == 1
+           string.append(True)
+      return string  
+
+def rand_bool_mat(n,k): 
+    """generate a random n x n matrix over bitstrings length k, intepreted as nested lists of Boolean values"""
+    matrix = []
+    for i in range(n):
+        matrix.append([]) ##initialise the matrix with n empty rows
+        for j in range(n):
+            matrix[i].append(rand_string(k)) ##in each empty row add n random bitstrings length k
+     return matrix       
+
+def bitdots(a,b):
+    """to define matrix multiplication it is useful to have a notion of the dot product (note a matrix product element is effectively a row dot product a column); here 
+       define a dot product w.r.t bitor, bitand"""
+    d = bitand(a[0],b[0])  ##initial value of d for iteration
+    for i in range(len(a)-1): ##up to len(a)-1 due to i+1 counter
+        d = bitor(d, bitand(a[i+1],b[i+1]))
+    return d
+    
+def col_mat(a,k):    
+    """return the k th column of matrix a (note that because of how we set matrices up we can extract the ith row of a just with a[i]""""
+    col = []
+    for i in range(len(a)):
+        col.append(a[i][k]) ##appends our list with kth entry of every row, which is exactly the kth column
+    return col
+    
+def prod_bool_mat(a,b)
+    """product of two matrices w.r.t and, or operations on bitstrings"""
+    prod = []
+    for i in range(len(a)):
+        prod.append([]) ##intialise rows of product matrix
+        for j in range(len(a)):
+            prod[i].append(bitdots(a[i],col_mat(b,j))## jth element of row i is ith row of a . jth column of b
+     return prod       
+    
+       
+       
