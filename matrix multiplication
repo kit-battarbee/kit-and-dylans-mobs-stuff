@@ -69,5 +69,55 @@ def prod_bool_mat(a,b)
             prod[i].append(bitdots(a[i],col_mat(b,j))## jth element of row i is ith row of a . jth column of b
      return prod       
     
+def generate_permutation(size):
+    """
+    Input should be SET_SIZE
+    Special cases are 2 and 3, where a random shuffling of integers
+    are used as the permutation.
+    Else loop works as follows:
+        - Finds primes uses Sieve of Eratosthenes until sum of generated
+          primes (subcycle_length) exceeds size.
+        - Removes last number if subcycle_length is bigger than size.
+        - Uses subcycle_length to pull permutations out of the shuffled
+          list of integers.
+    """
+    
+    shuffled_nums = [(i + 1) for i in range(size)]
+    shuffle(shuffled_nums)
+    
+    if (size == 2 or size == 3):
+        return Permutation.cycle(*shuffled_nums)
+    else:
+        bool_vals = [True for i in range(2, size)]
+        subcycle_lengths = []
+        
+        j = 0
+        while(sum(subcycle_lengths) < size and j < size - 2):
+            if (bool_vals[j] == True):
+                cur_val = 2
+                while ((j + 2) * cur_val < size):
+                    bool_vals[((j + 2) * cur_val) - 2] = False
+                    cur_val += 1
+                subcycle_lengths.append(j + 2)
+            j += 1
+        
+        if (sum(subcycle_lengths) > size):
+            subcycle_lengths.pop()
+        
+        perm = Permutation.cycle()
+        start = 0
+        for num in subcycle_lengths:
+            perm *= Permutation.cycle(*shuffled_nums[start:start + num])
+            start += num
+            
+        return perm
+
+## for p some permutation resulting from generate_permutation
+
+def permute_list(a):
+    b = []
+    for i in range(len(a)):
+        b.append(a[p(i+1)-1]) ## have to adjust indices
+    return b
        
        
