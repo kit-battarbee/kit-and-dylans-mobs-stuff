@@ -1,28 +1,28 @@
-## Generating Boolean matrices as nested lists of True / False values and multilpying them.
+## Generating Boolean matrices as nested lists of True / False values and multipying them.
 
 from random import randint
 
 def bitor(a,b):
     """runs the or operation on two bitstrings component-wise"""
     sum = []
-    if len(a) != len(b)
+    if len(a) != len(b):
        return 'Error'
     else:
        for i in range(len(a)): ## we already checked len(a) = len(b) so we can use either as the upper bound for indexing variable
            j = a[i] or b[i]
            sum.append(j)
-       return sum
+    return sum
 
 def bitand(a,b):
     """run the and operation on two bitstrings component-wise"""
     product = []
-    if len(a) != len(b)
+    if len(a) != len(b):
        return 'Error'
     else:
        for i in range(len(a)): 
            j = a[i] and b[i]
            product.append(j)
-       return product
+    return product
 
 def randstring(k)
     """to define random matrices we need to get random bitstrings, which are the elements of the matrices"""
@@ -32,7 +32,7 @@ def randstring(k)
                          ##this is giving us true / false with p = 1/2; might be possible to modify this as dicussed in paper
         if m == 0:
            string.append(False)
-        if m == 1
+        if m == 1:
            string.append(True)
       return string  
 
@@ -119,5 +119,77 @@ def permute_list(a):
     for i in range(len(a)):
         b.append(a[p(i+1)-1]) ## have to adjust indices
     return b
+    
+def h(a):
+    b = []
+    for i in range(len(a)):
+        b.append([])
+        for j in range(len(a)):
+            b[i].append(permute_list(a[i][j])
+    return b
+    
+
        
-       
+def convert_string(i,n):
+    """turn a number i into a length n list of true, false values"""
+    b = str(bin(i))[:2].zfill(n) ##convert i to binary, remove 0b, pad the front to give appropriate string length
+    c = []
+    for j in range(n):
+        if b[j] == '0': ##needs to be in '' since converted to string
+           c.append(False)
+        if b[j] == '1':
+           c.append(True)
+    return c      
+
+def all_lists(n):
+    """return all possible length n lists of true, false values"""
+    lists = []
+    for i in range(2**n):
+        lists.append(convert_string(i,n))
+    return lists
+
+def pack(a):
+    """pack a list into a Boolean matrix. Note single values are held in lists for compatibility with multiplication function"""
+    mat = []
+    s = floor(sqrt(len(a))) ## floor to remove float from sqrt(len(a)), indexing will fail if len(a) not square
+    for i in range(s):
+        mat.append([]) ## initialise rows
+        for j in range(s):
+            mat[i].append([a[i*s+j]])
+    return mat
+
+def all_matrices(k):
+    """compile a list of all k x k single-bit Boolean matrices"""
+    matrices = []
+    b = all_lists(k**2)
+    for i in range(len(b)):
+        matrices.append(pack(a[i]))
+    return matrices
+    
+def compose_permutations(g, h):
+    return lamba a : h(g(a))
+    
+def semidirect_product(tup1, tup2):
+    perm_mat = tup2[1](tup1[0])
+    first_elem = prod_bool_mat(perm_mat, tup2[0])
+    second_elem = compose_permutations(tup1[1],tup2[1])
+    return (first_elem, second_elem)
+    
+def exponentiation(tup,k):#this is really really slow and I don't know why
+    k_binary = bin(k)
+    value = tup
+    for digit in range(3,len(k_binary)):
+        value = semidirect_product(value, value)[:]
+        if (k_binary[digit] == '1'):
+           value = semidirect_product(value, tup)[:]
+    return value 
+    
+def generate_A(M,h): #M, h need to be predefined
+    x = randint(UPPER, LOWER) ##exponentiation function is reallllly slow; vladimir suggests 2**500 but there is absolutely no chance that will finish before the end of my phd
+    A = exponentiation((M,h),x)
+    return A[0]
+    
+
+    
+    
+    
