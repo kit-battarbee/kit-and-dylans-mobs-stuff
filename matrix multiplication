@@ -184,12 +184,46 @@ def exponentiation(tup,k):#this is really really slow and I don't know why
            value = semidirect_product(value, tup)[:]
     return value 
     
-def generate_A(M,h): #M, h need to be predefined
-    x = randint(UPPER, LOWER) ##exponentiation function is reallllly slow; vladimir suggests 2**500 but there is absolutely no chance that will finish before the end of my phd
+def generate_A(M,h,x): #M, h need to be predefined
     A = exponentiation((M,h),x)
     return A[0]
     
-
+def pull(k,a):
+    b = []
+    for i in range(len(a)):
+        b.append([])
+        for j in range(len(a)):
+            b[i].append([a[i][j][k]])
+    return b
+    
+def count_solutions(a, b, mats) ##takes a list of matrices to count solutions from as an input
+    count = 0
+    for i in range(len(mats)):
+        if a == prod_bool_mat(mats[i], b):
+           count = count + 1
+        else:
+           count = count + 0 
+    return count
+    
+def multiply_list(a)
+    result = 1 
+    for x in a:
+        result = result * x
+    return result
+    
+def count_telescope_solutions(M,h): ##need to decide on what upper, lower bounds to use 
+    x = randint(LOWER_BOUND, UPPER_BOUND)
+    mats = all_matrices(len(M))
+    a = generate_A(M,h,x)
+    b = prod_bool_mat(h(a), M)
+    sols_list = []
+    for i in range(len(M[0][0])):
+        single_sols = count_solutions(pull(i, b), pull(i, a), mats)
+        sols_list.append(single_sols)
+    return (sols_list, multiply_list(sols_list), math.log(multiply_list(sols_list), 2))
+    
+    
+    
     
     
     
