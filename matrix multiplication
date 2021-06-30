@@ -163,7 +163,7 @@ def all_matrices(k):
     matrices = []
     b = all_lists(k**2)
     for i in range(len(b)):
-        matrices.append(pack(a[i]))
+        matrices.append(pack(b[i]))
     return matrices
     
 def compose_permutations(g, h):
