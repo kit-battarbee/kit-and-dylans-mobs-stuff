@@ -70,17 +70,6 @@ def prod_bool_mat(a,b)
      return prod       
     
 def generate_permutation(size):
-    """
-    Input should be SET_SIZE
-    Special cases are 2 and 3, where a random shuffling of integers
-    are used as the permutation.
-    Else loop works as follows:
-        - Finds primes uses Sieve of Eratosthenes until sum of generated
-          primes (subcycle_length) exceeds size.
-        - Removes last number if subcycle_length is bigger than size.
-        - Uses subcycle_length to pull permutations out of the shuffled
-          list of integers.
-    """
     
     shuffled_nums = [(i + 1) for i in range(size)]
     shuffle(shuffled_nums)
